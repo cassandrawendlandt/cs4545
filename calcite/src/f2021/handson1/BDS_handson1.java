@@ -80,6 +80,29 @@ public class BDS_handson1 {
 	  */
 	 private void runQuery1(RelBuilder builder) { 
 		 System.out.println("\nRunning Q1: Show the details (model, MPG, and country of origin) of the top 5 most fuel efficient cars.");
+		 builder
+		 .scan("cars")
+		 .sort(  builder.desc(builder.field("MPG"))  ) 
+		 .limit(0 ,5) 
+		 .project(builder.field("Model"),builder.field("MPG"),builder.field("Origin"));
+		    
+		 final RelNode node = builder.build();
+		 if (verbose) {
+			 System.out.println(RelOptUtil.toString(node));
+		 }
+		    
+		 // execute the query plan
+		 try  {
+			 final PreparedStatement preparedStatement = RelRunners.run(node, calConn);
+			 ResultSet rs =  preparedStatement.executeQuery();
+			 while (rs.next()) {
+				 System.out.println(rs.getString(1)+ " " + rs.getFloat(2) + " " + rs.getString(3));
+			 }
+			 rs.close();	 
+		 } catch (SQLException e) {
+			 // TODO Auto-generated catch block
+			 e.printStackTrace();
+		 }
 						 
 		
 	 }
