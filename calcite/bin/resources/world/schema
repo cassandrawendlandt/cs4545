@@ -1,0 +1,3 @@
+Model:string,MPG:float,Cylinders:int,Displacement:float,Horsepower:int,Weight:int,Acceleration:float,Year:int,Origin:string
+countries(Country:string,Population:long,Area:int,Currency:string)
+
