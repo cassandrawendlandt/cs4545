@@ -116,7 +116,28 @@ public class BDS_handson1 {
 	 private void runQuery2(RelBuilder builder) { 
 		 System.out.println("\nRunning Q2: For each country of origin, show the average fuel economy (MPG) of the cars, where the average fuel economy is greater than 25 ");
 					 
-		 
+		 builder
+		 .scan("cars")
+		 .aggregate(builder.groupKey("Origin"), builder.avg(false,"Average MPG", builder.field("MPG")))
+		 .filter(builder.call(SqlStdOperatorTable.GREATER_THAN, builder.field("Average MPG"),builder.literal(25)));
+		    
+		 final RelNode node = builder.build();
+		 if (verbose) {
+			 System.out.println(RelOptUtil.toString(node));
+		 }
+		    
+		 // execute the query plan
+		 try  {
+			 final PreparedStatement preparedStatement = RelRunners.run(node, calConn);
+			 ResultSet rs =  preparedStatement.executeQuery();
+			 while (rs.next()) {
+				 System.out.println(rs.getString(1)+ " " + rs.getFloat(2) ); 
+			 }
+			 rs.close();	 
+		 } catch (SQLException e) {
+			 // TODO Auto-generated catch block
+			 e.printStackTrace();
+		 }
 	 }
 		 
 	//--------------------------------------------------------------------------------------
@@ -127,10 +148,45 @@ public class BDS_handson1 {
 	  */
 	 private void runQuery3(RelBuilder builder) { 
 		 System.out.println("\nRunning Q3: For each country, show the name of the country, currency, and the number of cars originated in that country.");
-							 
-		
+		 builder
+		 .scan("cars").as("car")
+		 .scan("countries").as("countries")
+		 
+		  
+		  .join(JoinRelType.INNER)
+		  
+		  .filter( builder.equals(builder.field("car", "Origin"), builder.field("countries", "Country")))
+		  
+		  .project(builder.field("Origin"), builder.field("Currency"))
+		  .distinct();
+		  
+		 
+		 final RelNode node = builder.build();
+		 if (verbose) {
+			 System.out.println(RelOptUtil.toString(node));
+		 }
+		    
+		 // execute the query plan
+		 try  {
+			 final PreparedStatement preparedStatement = RelRunners.run(node, calConn);
+			 ResultSet rs =  preparedStatement.executeQuery();
+			 while (rs.next()) {
+				 System.out.println(rs.getString(1) + " :: " +rs.getString(2) ); 
+			 }
+			 rs.close();	 
+		 } catch (SQLException e) {
+			 // TODO Auto-generated catch block
+			 e.printStackTrace();
+		 }
 	 }
 	 
+	private RelBuilder scan(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	//--------------------------------------------------------------------------------------
 	 
 	 /**
