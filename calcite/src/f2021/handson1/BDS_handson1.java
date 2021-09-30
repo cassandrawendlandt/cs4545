@@ -87,7 +87,7 @@ public class BDS_handson1 {
 		 .project(builder.field("Model"),builder.field("MPG"),builder.field("Origin"));
 		    
 		 final RelNode node = builder.build();
-		 if (verbose) {
+		 if (!verbose) {
 			 System.out.println(RelOptUtil.toString(node));
 		 }
 		    
@@ -122,7 +122,7 @@ public class BDS_handson1 {
 		 .filter(builder.call(SqlStdOperatorTable.GREATER_THAN, builder.field("Average MPG"),builder.literal(25)));
 		    
 		 final RelNode node = builder.build();
-		 if (verbose) {
+		 if (!verbose) {
 			 System.out.println(RelOptUtil.toString(node));
 		 }
 		    
@@ -162,7 +162,7 @@ public class BDS_handson1 {
 		  
 		 
 		 final RelNode node = builder.build();
-		 if (verbose) {
+		 if (!verbose) {
 			 System.out.println(RelOptUtil.toString(node));
 		 }
 		    
@@ -171,7 +171,7 @@ public class BDS_handson1 {
 			 final PreparedStatement preparedStatement = RelRunners.run(node, calConn);
 			 ResultSet rs =  preparedStatement.executeQuery();
 			 while (rs.next()) {
-				 System.out.println(rs.getString(1) + " :: " +rs.getString(2) ); 
+				 System.out.println(rs.getString(1) + " : " +rs.getString(2) ); 
 			 }
 			 rs.close();	 
 		 } catch (SQLException e) {
@@ -212,7 +212,7 @@ public class BDS_handson1 {
 			 ResultSet rs =  preparedStatement.executeQuery();
 				 while (rs.next()) {
 					 String model = rs.getString(1);
-					 System.out.println(model);
+					 //System.out.println(model);
 				 }
 				 rs.close();	 
 		 } catch (SQLException e) {

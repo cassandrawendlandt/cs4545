@@ -380,7 +380,7 @@ public class RelAlgebraDemo {
 		 
 		 final RelNode node = builder.build();
 		 if (verbose) {
-			 System.out.println(RelOptUtil.toString(node));
+			 //System.out.println(RelOptUtil.toString(node));
 		 }
 		    
 		 // execute the query plan
